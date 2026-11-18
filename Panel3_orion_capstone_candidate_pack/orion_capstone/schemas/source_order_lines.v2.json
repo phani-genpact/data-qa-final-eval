@@ -1,0 +1,56 @@
+{
+  "table": "source_order_lines",
+  "version": "v2",
+  "columns": [
+    {
+      "name": "order_id",
+      "type": "int",
+      "nullable": false
+    },
+    {
+      "name": "line_no",
+      "type": "int",
+      "nullable": false
+    },
+    {
+      "name": "order_ts",
+      "type": "timestamp",
+      "nullable": false
+    },
+    {
+      "name": "customer_id",
+      "type": "string",
+      "nullable": true
+    },
+    {
+      "name": "product_id",
+      "type": "string",
+      "nullable": false
+    },
+    {
+      "name": "qty",
+      "type": "decimal(10,3)",
+      "nullable": false
+    },
+    {
+      "name": "gross_amount",
+      "type": "decimal(12,2)",
+      "nullable": false
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "nullable": false
+    },
+    {
+      "name": "discount_amt",
+      "type": "decimal(12,2)",
+      "nullable": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "nullable": false
+    }
+  ]
+}

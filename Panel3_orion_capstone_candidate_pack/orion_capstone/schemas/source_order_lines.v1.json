@@ -1,0 +1,46 @@
+{
+  "table": "source_order_lines",
+  "version": "v1",
+  "columns": [
+    {
+      "name": "order_id",
+      "type": "int",
+      "nullable": false
+    },
+    {
+      "name": "line_no",
+      "type": "int",
+      "nullable": false
+    },
+    {
+      "name": "order_ts",
+      "type": "timestamp",
+      "nullable": false
+    },
+    {
+      "name": "customer_id",
+      "type": "string",
+      "nullable": true
+    },
+    {
+      "name": "product_id",
+      "type": "string",
+      "nullable": false
+    },
+    {
+      "name": "qty",
+      "type": "int",
+      "nullable": false
+    },
+    {
+      "name": "amount",
+      "type": "decimal(12,2)",
+      "nullable": false
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "nullable": false
+    }
+  ]
+}
