@@ -14,8 +14,7 @@ def load_schema(version):
 
 
 def diff_schemas(old, new):
-    """Compare schema contracts and report added, removed, and changed columns."""
-    # raise NotImplementedError("TODO")
+    """Report added, removed, type-changed, and nullability-changed columns."""
     old_columns = {column["name"]: column for column in old["columns"]}
     new_columns = {column["name"]: column for column in new["columns"]}
     common = old_columns.keys() & new_columns.keys()

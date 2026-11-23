@@ -11,6 +11,10 @@ def test_L3_no_missing_keys(curated, fact):
     fact_keys = fact[KEY].drop_duplicates()
     comparison = expected_keys.merge(fact_keys, on=KEY, how="left", indicator=True)
     missing = comparison.loc[comparison["_merge"] == "left_only", KEY]
+    print(
+        f"Curated-to-fact key coverage: expected keys={len(expected_keys)}, "
+        f"fact distinct keys={len(fact_keys)}, missing keys={len(missing)}"
+    )
     if not missing.empty:
         print(f"Missing fact keys ({len(missing)}):")
         print(missing.to_string(index=False))
@@ -24,6 +28,10 @@ def test_L3_fact_grain_unique(fact):
     # raise NotImplementedError("TODO")
     duplicate_rows = fact.loc[fact.duplicated(subset=KEY, keep=False), KEY].sort_values(KEY)
     duplicates = duplicate_rows.drop_duplicates()
+    print(
+        f"Fact key uniqueness: fact rows={len(fact)}, distinct keys={fact[KEY].drop_duplicates().shape[0]}, "
+        f"duplicate keys={len(duplicates)}, rows involved={len(duplicate_rows)}"
+    )
     if not duplicate_rows.empty:
         print(f"Duplicate fact key rows ({len(duplicate_rows)} rows):")
         print(duplicate_rows.to_string(index=False))
@@ -60,6 +68,11 @@ def test_L4_row_hash(curated, fact):
         comparison["row_hash_expected"] != comparison["row_hash_actual"],
         KEY + ["row_hash_expected", "row_hash_actual"],
     ]
+    print(
+        f"Row-hash reconciliation: expected distinct keys={expected[KEY].drop_duplicates().shape[0]}, "
+        f"fact rows={len(actual)}, fact distinct keys={actual[KEY].drop_duplicates().shape[0]}, "
+        f"matched keys={len(comparison)}, mismatched hashes={len(mismatches)}"
+    )
     if not mismatches.empty:
         print(f"Row-hash mismatches ({len(mismatches)}):")
         print(mismatches.to_string(index=False))

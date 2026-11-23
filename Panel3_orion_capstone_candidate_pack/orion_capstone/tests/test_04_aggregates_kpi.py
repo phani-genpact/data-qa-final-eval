@@ -77,8 +77,11 @@ def test_agg_recompute_from_curated(curated, dim_customer, agg):
     ]
     print(
         f"Curated-to-aggregate recomputation: expected groups={len(expected)}, "
-        f"aggregate groups={len(agg)}, mismatched groups={len(mismatches)}, "
-        f"unmapped customer lines={len(unmapped)}"
+        f"aggregate groups={len(agg)}, expected orders={int(expected['orders'].sum())}, "
+        f"aggregate orders={int(agg['orders'].sum())}, "
+        f"expected revenue={expected['revenue'].sum():.2f}, "
+        f"aggregate revenue={agg['revenue'].sum():.2f}, "
+        f"mismatched groups={len(mismatches)}, unmapped customer lines={len(unmapped)}"
     )
     if not unmapped.empty:
         print("Active curated lines without a current customer-dimension match:")
@@ -114,6 +117,9 @@ def test_report_equals_agg(agg, rpt_daily):
     ]
     print(
         f"Daily report reconciliation: aggregate rows={len(agg)}, report rows={len(rpt_daily)}, "
+        f"aggregate orders={int(agg['orders'].sum())}, report orders={int(rpt_daily['orders'].sum())}, "
+        f"aggregate revenue={agg['revenue'].sum():.2f}, "
+        f"report revenue={rpt_daily['revenue'].sum():.2f}, "
         f"missing/extra/different groups={len(mismatches)}"
     )
     if not mismatches.empty:
@@ -149,7 +155,10 @@ def test_monthly_aov_recompute(rpt_daily, rpt_monthly):
     mismatches = comparison.loc[comparison["_merge"].ne("both") | aov_mismatch]
     print(
         f"Monthly AOV reconciliation: recomputed months={len(expected)}, "
-        f"reported months={len(rpt_monthly)}, missing/extra/different months={len(mismatches)}"
+        f"reported months={len(rpt_monthly)}, "
+        f"expected values={expected[['month', 'orders', 'revenue', 'avg_order_value']].to_dict(orient='records')}, "
+        f"reported values={rpt_monthly[['month', 'orders', 'revenue', 'avg_order_value']].to_dict(orient='records')}, "
+        f"missing/extra/different months={len(mismatches)}"
     )
     if not mismatches.empty:
         print("Monthly AOV mismatches:")

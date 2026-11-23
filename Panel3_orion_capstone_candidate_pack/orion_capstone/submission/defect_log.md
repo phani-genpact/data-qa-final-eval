@@ -2,4 +2,4 @@
 
 | Defect | Failing tests | Evidence (query or keys) | Expected vs actual | Likely root cause | Reports affected |
 | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |
+| Duplicate fact order lines for customer C0060 | `test_dim_customer_one_current_row`; `test_L3_fact_grain_unique`; `test_agg_recompute_from_curated` | `fact[fact.duplicated(["order_id", "line_no"], keep=False)]`; duplicate keys: (1197, 1), (1303, 1), (1330, 1), (1396, 1). Each is C0060 / North. | Expected: each of the 4 keys appears once (4 rows). Actual: each appears twice (8 rows), +4 excess rows and +$475.00 revenue ($250.00 + $56.25 + $112.50 + $56.25). Overall fact row count still matches expected because 4 other keys are missing. | `dim_customer` has two `is_current = 'Y'` rows for C0060, both North. A join on `customer_id` fans each line out twice; dimension uniqueness is not enforced. | `agg_daily_region_sales` and `rpt_daily_region_sales` (affected North daily revenue); `rpt_monthly_kpi` (monthly revenue and AOV). |
